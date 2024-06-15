@@ -65,7 +65,7 @@ const findInvalidCards = arrayOfCards => {
     return invalidCards;
 };
 
-//console.log(findInvalidCards(batch));
+
 
 // create array of card companies that issued invalid card numbers using switch statement
 const idInvalidCardCompanies = arrayOfInvalidCards => {
@@ -101,7 +101,60 @@ const idInvalidCardCompanies = arrayOfInvalidCards => {
         return cardCompanies;
     };
 
+
 //console.log(idInvalidCardCompanies(batch));
+const stringToArray = stringOfNumbers => {
+  let stringToInt = parseInt(stringOfNumbers);
+  let newArr =[];
+  while (stringToInt != 0) {
+    const remainder = stringToInt % 10;
+    newArr.push(remainder);
+    stringToInt = (stringToInt - remainder) / 10;
+  }
+  return newArr.reverse();
+}
+
+
+
+// function to convert an invalid card number to valid by subtracting the remainder from luhn algorithm from the first number in the array that is larger or equal (starting from the second number)
+const convertToValid = invalidCard => {
+  // store last number of the array  
+  const lastNumber = invalidCard[invalidCard.length - 1];
+
+  // create a new array copy
+  const copyArray = [];
+  for (let i = invalidCard.length - 2; i >= 0 ; i--) {
+    copyArray[i] = invalidCard[i];
+  };
+
+  //reverse the copied array
+  copyArray.reverse();
+
+  //use .map() to double every other value of the copied array (values that have an even index number: index % 2 = 0), subract 9 if over 10
+  const doubled = copyArray.map((value, index) => { 
+    if (index % 2 === 0) {
+        if (value * 2 >= 10) {
+          return (value * 2) - 9;
+        } else return (value * 2);
+    } else {
+        return value;
+    }
+  });
+  
+  // use .reduce() to add all the numbers including the last digit of the original array 
+  const checkNumber = doubled.reduce((accumulator, currentValue) => 
+    accumulator + currentValue, 0,
+  ) + lastNumber;
+
+  //start from Index 1 and loop through the invalid array to find the first number that is larger than or equal to (checkNumber % 10) and subract to make the new remainder equal 0
+  for (let i = 1; i < invalidCard.length; i++) {
+    if (invalidCard[i] >= checkNumber % 10) {
+      invalidCard[i] = invalidCard[i] - (checkNumber % 10);
+      break;
+    }
+  }
+  return invalidCard;
+}
 
 
 
