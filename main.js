@@ -67,6 +67,7 @@ const findInvalidCards = arrayOfCards => {
 
 //console.log(findInvalidCards(batch));
 
+// create array of card companies that issued invalid card numbers using switch statement
 const idInvalidCardCompanies = arrayOfInvalidCards => {
     const cardCompanies = [];
     arrayOfInvalidCards.forEach(card => {
@@ -100,7 +101,7 @@ const idInvalidCardCompanies = arrayOfInvalidCards => {
         return cardCompanies;
     };
 
-console.log(idInvalidCardCompanies(batch));
+//console.log(idInvalidCardCompanies(batch));
 
 
 
